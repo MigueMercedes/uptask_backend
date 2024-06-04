@@ -12,7 +12,9 @@ export const deleteTaskService = async (taskId: string, project: IProject) => {
 			}
 		}
 
-        project.tasks = project.tasks.filter( t => t.toString() !== task.id)
+		const taskIndex = project.tasks.findIndex((t) => t.id === task.id)
+		console.log('taskIndex', taskIndex)
+		project.tasks.splice(taskIndex, 1)
 
 		await Promise.allSettled([task.deleteOne(), project.save()])
 
