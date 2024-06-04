@@ -3,8 +3,8 @@ import Project from '../../models/Project';
 
 export const getOneProjectService = async (projectId: string) => {
   try {
-    const project = await Project.findById(projectId);
-
+    const project = await Project.findById(projectId).populate('tasks');
+    
     if (!project) {
       return {
         status: 404,
