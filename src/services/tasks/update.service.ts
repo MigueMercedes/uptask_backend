@@ -1,17 +1,12 @@
-import { IProject } from '../../models/Project'
-import Task, { IBaseTask } from '../../models/Task'
 import colors from 'colors'
+import { IBaseTask, ITask } from '../../models/Task'
 
-export const updateTaskService = async (taskId: string, project: IProject, updatedTask: IBaseTask) => {
+export const updateTaskService = async (task: ITask, updatedTask: IBaseTask) => {
 	try {
-		const task = await Task.findByIdAndUpdate(taskId, updatedTask)
+		task.name = updatedTask.name
+		task.description = updatedTask.description
 
-		if (!task || task.project.toString() !== project.id) {
-			return {
-				status: 404,
-				message: 'Task Not Found'
-			}
-		}
+		await task.save()
 
 		return {
 			status: 200,

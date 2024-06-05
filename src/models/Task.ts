@@ -13,6 +13,7 @@ export type TaskStatus = (typeof taskStatus)[keyof typeof taskStatus]
 export interface IBaseTask {
 	name: string
 	description: string
+	status: TaskStatus
 }
 
 export interface ITask extends IBaseTask, Document {

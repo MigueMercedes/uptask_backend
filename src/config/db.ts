@@ -8,7 +8,7 @@ export const connectDB = async () => {
 		const url = `${connection.host}:${connection.port}`
 		console.log(colors.yellow.bold(`DB Connected Successfully: ${url}`))
 	} catch (error) {
-		console.log(colors.bgRed.bold(error.message))
+		console.log(colors.bgRed.bold((error as Error).message))
 		exit(1)
 	}
 }

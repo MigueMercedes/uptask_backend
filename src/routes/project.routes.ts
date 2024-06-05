@@ -8,23 +8,27 @@ import {
   updateProjectController,
 } from '../controllers/project.controller';
 import { handleInputErrors } from '../middleware/validation';
+import { projectExistsMiddleware } from '../middleware/project';
 
 const router = Router();
+
 
 router.post(
   '/',
   body('projectName')
-    .notEmpty()
-    .withMessage('The project name must be required'),
+  .notEmpty()
+  .withMessage('The project name must be required'),
   body('clientName').notEmpty().withMessage('The client name must be required'),
   body('description')
-    .notEmpty()
-    .withMessage('The description must be required'),
+  .notEmpty()
+  .withMessage('The description must be required'),
   handleInputErrors,
   createProjectController
 );
 
 router.get('/', getAllProjectController);
+
+router.param('id', projectExistsMiddleware)
 
 router.get(
   '/:id',

@@ -1,19 +1,11 @@
 import colors from 'colors'
 import { IProject } from '../../models/Project'
-import { getOneTaskService } from './get-one.service'
-export const deleteTaskService = async (taskId: string, project: IProject) => {
+import { ITask } from '../../models/Task'
+
+export const deleteTaskService = async (task: ITask, project: IProject) => {
 	try {
-		const { status, data: task, message } = await getOneTaskService(taskId, project)
-
-		if (!task) {
-			return {
-				status,
-				message
-			}
-		}
-
-		const taskIndex = project.tasks.findIndex((t) => t.id === task.id)
-		console.log('taskIndex', taskIndex)
+		const taskIndex = project.tasks.findIndex((t) => t?.id === task.id)
+		
 		project.tasks.splice(taskIndex, 1)
 
 		await Promise.allSettled([task.deleteOne(), project.save()])

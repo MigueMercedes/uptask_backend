@@ -1,6 +1,6 @@
-import type { Request, Response, NextFunction } from 'express'
-import { getOneProjectService } from '../services/projects/get-one.service'
-import { IProject } from '../models/Project'
+import type { NextFunction, Request, Response } from 'express'
+import Project, { IProject } from '../models/Project'
+import colors from 'colors'
 
 declare global {
 	namespace Express {
@@ -10,16 +10,17 @@ declare global {
 	}
 }
 
-export const validateProjectExists = async (req: Request, res: Response, next: NextFunction) => {
+export const projectExistsMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { status, data, message } = await getOneProjectService(req.params.projectId || req.params.id)
+		const project = await Project.findById(req.params.projectId || req.params.id).populate('tasks')
 
-		if (!data) return res.status(status).json({ message })
+		if (!project) return res.status(404).json({ message: 'Project Not Found' })
 
-		req.project = data
+		req.project = project
 
 		next()
 	} catch (error) {
-		res.status(500).json({ error: 'An error ocurred' })
+		console.log(colors.red(`projectExistsMiddleware: ${error}`))
+		res.status(500).json({ message: 'An error ocurred while retrieving the project' })
 	}
 }

@@ -9,7 +9,7 @@ export const getAllProjectService = async () => {
       data: projects,
     };
   } catch (error) {
-    console.log(colors.red(`getOneProjectService: ${error}`));
+    console.log(colors.red(`getAllProjectService: ${error}`));
     return {
       status: 500,
       message: 'An error occurred while retrieving the projects',
