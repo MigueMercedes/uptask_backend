@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "uptask"
-    ]
+    ],
+    "github.copilot.enable": {
+        "*": false,
+    }
 }
