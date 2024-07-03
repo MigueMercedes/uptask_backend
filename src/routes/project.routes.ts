@@ -16,12 +16,13 @@ const router = Router();
 router.post(
   '/',
   body('projectName')
-  .notEmpty()
-  .withMessage('The project name must be required'),
-  body('clientName').notEmpty().withMessage('The client name must be required'),
+    .notEmpty()
+    .withMessage('The project name must be required'),
+  body('clientName')
+    .notEmpty()
+    .withMessage('The client name must be required'),
   body('description')
-  .notEmpty()
-  .withMessage('The description must be required'),
+    .optional(),
   handleInputErrors,
   createProjectController
 );
@@ -32,28 +33,35 @@ router.param('id', projectExistsMiddleware)
 
 router.get(
   '/:id',
-  param('id').isMongoId().withMessage('Invalid ID'),
+  param('id')
+    .isMongoId()
+    .withMessage('Invalid ID'),
   handleInputErrors,
   getProjectByIdController
 );
 
-router.put(
+router.patch(
   '/:id',
-  param('id').isMongoId().withMessage('Invalid ID'),
+  param('id')
+    .isMongoId()
+    .withMessage('Invalid ID'),
   body('projectName')
     .notEmpty()
     .withMessage('The project name must be required'),
-  body('clientName').notEmpty().withMessage('The client name must be required'),
-  body('description')
+  body('clientName')
     .notEmpty()
-    .withMessage('The description must be required'),
+    .withMessage('The client name must be required'),
+  body('description')
+    .optional(),
   handleInputErrors,
   updateProjectController
 );
 
 router.delete(
   '/:id',
-  param('id').isMongoId().withMessage('Invalid ID'),
+  param('id')
+    .isMongoId()
+    .withMessage('Invalid ID'),
   handleInputErrors,
   deleteProjectController
 );
